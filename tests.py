@@ -97,6 +97,49 @@ def test_mse_loss():
     else:
         return -1
 
+def test_mse_grad():
+    # Inicialização da rede
+    layer1 = Layer(6, 10)
+    sigmoidal1 = Sigmoidal()
+    layer2 = Layer(10, 2)
+    s = Softmax()
+    network = Network([layer1, sigmoidal1, layer2, s])
+
+    # Gerar entrada e saída
+    x = [random.random() for _ in range(6)]
+    prediction = network.forward(x)  # tensor com 2 elementos
+
+    target = [random.random() for _ in range(2)]  # tensor com 2 elementos
+
+    # Cálculo da perda MSE na implementação customizada
+    mse = MSELoss()
+    mse.forward(prediction, target)
+
+    # Cálculo da perda MSE usando PyTorch
+    prediction_tensor = torch.tensor(prediction, requires_grad=True)  # Habilitar gradientes
+    target_tensor = torch.tensor(target)
+    
+    loss_torch = torch.nn.MSELoss()(prediction_tensor, target_tensor)
+    loss_torch.backward()  # Calcula os gradientes
+
+    # Obter gradientes do PyTorch
+    grad_torch = prediction_tensor.grad.numpy()
+
+    # Cálculo do gradiente na implementação customizada
+    grad_custom = mse.backward()
+
+    print(grad_torch)
+    print(grad_custom)
+
+    # Comparar os gradientes
+    error = ((np.array(grad_custom) - np.array(grad_torch)) ** 2).mean()
+
+    if error < 1e-8:
+        return 0
+    else:
+        return -1
+
+assert test_mse_grad() == 0
 assert test_mse_loss() == 0
 assert test_softmax() == 0
 assert test_sigmoidal() == 0

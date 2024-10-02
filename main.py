@@ -55,6 +55,13 @@ prediction = network(first_row.to_list()); # (2,)
 print(prediction)
 print([target.to_list()[i].item() for i in range(target.size)])
 
+# erro na camada de saída
 mse = MSELoss()
 loss = mse(prediction, target.to_list())
 print(loss)
+
+# erro nas camadas ocultas
+# pegar gradiente da camada de saída
+grad = mse.backward()
+print("Gradient:", grad)
+# propagar para trás

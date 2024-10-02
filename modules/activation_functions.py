@@ -20,7 +20,7 @@ class Softmax():
         pass
 
     def forward(self, x):
-        return np.exp(x) / np.exp(x).sum()
+        return (np.exp(x) / np.exp(x).sum()).tolist()
     
     def backward(self, gradout):
         pass
