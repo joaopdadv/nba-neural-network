@@ -15,10 +15,7 @@ class Layer():
                 soma += x[i] * self.W[j][i]  # Soma ponderada
             soma += self.b[j]  # Adiciona o bias
             output.append(soma)  # Adiciona o resultado ao vetor de saída
-        return output  # Vetor de saída de tamanho dout
-
-    # def forward_np(self, x): # x deve ter tamanho din e é a entrada da camada
-    #     return [sum([x[i] * self.W[j][i] for i in range(len(x))]).item() + self.b[j] for j in range(len(self.b))] # retorna um vetor de tamanho dout
+        return output  # Vetor de saída de tamanho dout (vetor de somatórias)
     
     def backward():
         pass
@@ -27,5 +24,17 @@ class Layer():
         return self.forward(x)
 
 class Network():
-    def __init__(self) -> None:
+    def __init__(self, blocks:list) -> None:
+        self.blocks = blocks
+
+    def forward(self, x):
+        for block in self.blocks:
+            x = block.forward(x)
+        return x
+
+    def backward(self):
         pass
+
+    def __call__(self, x):
+        return self.forward(x)
+    

@@ -14,3 +14,16 @@ class Sigmoidal:
 
     def __call__(self, x):
         return self.forward(x)
+    
+class Softmax():
+    def __init__(self):
+        pass
+
+    def forward(self, x):
+        return np.exp(x) / np.exp(x).sum()
+    
+    def backward(self, gradout):
+        pass
+
+    def __call__(self, x):
+        return self.forward(x)
