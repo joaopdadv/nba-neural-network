@@ -22,4 +22,24 @@ def test_forward():
     else:
         return -1
 
+def test_sigmoidal():
+    sigmoidal = Sigmoidal()
+    layer = Layer(6, 5)
+    x = [random.random() for _ in range(6)]
+    data = sigmoidal(layer(x))
+
+    sigmoidal_torch = torch.nn.Sigmoid()
+    layer_torch = torch.nn.Linear(6, 5)
+    layer_torch.weight.data = torch.tensor(layer.W)
+    layer_torch.bias.data = torch.tensor(layer.b)
+    data_torch = sigmoidal_torch(layer_torch(torch.tensor(x))).tolist()
+
+    error = ((np.array(data) - np.array(data_torch)) ** 2).mean()
+
+    if error < 1e-8:
+        return 0
+    else:
+        return -1
+
+assert test_sigmoidal() == 0
 assert test_forward() == 0

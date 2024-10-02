@@ -1,12 +1,14 @@
 import numpy as np
+import math
 
-class Sigmoidal():
+class Sigmoidal:
     def __init__(self):
         pass
-
-    def forward(self, x): # x shape deve ser (1, din)
-        return 1 / (1 + np.exp(-x))
     
+    def forward(self, x): # x shape deve ser (1, din)
+        # Aplica a função sigmoidal em cada elemento de x
+        return [1 / (1 + math.exp(-xi)) for xi in x] # retorna um vetor de tamanho din
+
     def backward(self):
         pass
 
